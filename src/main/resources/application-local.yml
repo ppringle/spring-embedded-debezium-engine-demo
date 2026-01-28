@@ -1,0 +1,8 @@
+spring:
+  docker:
+    compose:
+      file: docker/docker-compose.yml
+      enabled: true
+
+server:
+  port: 9080

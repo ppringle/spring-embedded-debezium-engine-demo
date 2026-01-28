@@ -1,0 +1,37 @@
+services:
+  source-user-db:
+    image: postgres:16.9
+    environment:
+      POSTGRES_DB: source-user-db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - source_db_user_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d source-user-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s # Optional: give PostgreSQL time to start before first check
+    ports:
+      - "5542:5432"
+  target-user-db:
+    image: postgres:16.9
+    environment:
+      POSTGRES_DB: target-user-db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - target_db_user_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d target-user-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s # Optional: give PostgreSQL time to start before first check
+    ports:
+      - "5642:5432"
+
+volumes:
+  source_db_user_data:
+  target_db_user_data:
